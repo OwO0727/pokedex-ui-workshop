@@ -31,7 +31,7 @@ export default function PokemonComponent(props : Props) {
            </Row>
            <Row>
                <Col>
-                   <Image src={pokemon.mainImage} thumbnail />
+                   <Image src={pokemon.mainImage} alt="" thumbnail />
                </Col>
                <Col md={8}>
           <Row>
