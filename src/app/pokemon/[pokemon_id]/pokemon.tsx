@@ -9,12 +9,6 @@ type Props ={
 
 export default function PokemonComponent(props : Props) {
    const {pokemon} = props;
-   const stats = [
-    { label: "Speed", value: pokemon.speed, color: "#00cfff" },
-    { label: "Health points", value: pokemon.healthPoints, color: "#f51d47" },
-    { label: "Attack", value: pokemon.attack, color: "#ffc400" },
-    { label: "Defense", value: pokemon.defense, color: "#007849" },
-  ];
 
   const getFamilyTag = (pokemon: Pokemon, evolution: string) => {
         if (evolution === pokemon.devolution) {
@@ -40,41 +34,22 @@ export default function PokemonComponent(props : Props) {
                    <Image src={pokemon.mainImage} thumbnail />
                </Col>
                <Col md={8}>
-          {stats.map(stat => (
-            <div key={stat.label} className="mb-3">
-              <div className="fw-bold">{stat.label}:</div>
-              <div className="position-relative">
-                <ProgressBar
-                  now={stat.value}
-                  max={100}
-                  style={{
-                    height: '24px',
-                    backgroundColor: '#e9ecef',
-                  }}
-                  variant="custom"
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    height: '24px',
-                    width: `${stat.value}%`,
-                    backgroundColor: stat.color,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: '0.9rem',
-                    borderRadius: '4px',
-                  }}
-                >
-                  {stat.value}
-                </div>
-              </div>
-            </div>
-          ))}
+          <Row>
+            <Col xs={3}>Speed:</Col>
+            <Col><ProgressBar variant="info" now={pokemon.speed} label={pokemon.speed} /></Col>
+        </Row>
+        <Row>
+            <Col xs={3}>Health points: </Col>
+            <Col><ProgressBar variant="danger" now={pokemon.healthPoints} label={pokemon.healthPoints} /></Col>
+        </Row>
+        <Row>
+            <Col xs={3}>Attack: </Col>
+            <Col><ProgressBar variant="warning" now={pokemon.attack} label={pokemon.attack} /></Col>
+        </Row>
+        <Row>
+            <Col xs={3}>Defense: </Col>
+            <Col><ProgressBar variant="success" now={pokemon.defense} label={pokemon.defense} /></Col>
+        </Row>
     <Accordion alwaysOpen >
       <Accordion.Item eventKey="0" >
         <Accordion.Header>Pokemon type</Accordion.Header>
