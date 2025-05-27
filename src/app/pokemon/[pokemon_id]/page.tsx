@@ -9,8 +9,10 @@ import PokeNavBar from '@/components/pokeNavBarComp';
 
 
 // This type is used to get the pokemon id from the url path
-type Params = {
-   params: { pokemon_id: string }
+interface Params {
+    params: {
+    pokemon_id: string;
+  };
 }
 
 
