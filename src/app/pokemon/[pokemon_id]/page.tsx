@@ -1,42 +1,58 @@
+// Instructs React (Next.js) to run this code on the client side.
+// Next.js by default would render this content on the server side where the application is hosted.
 'use client'
 import Pokemon from '@/model/pokemon';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Image, Spinner, Row } from 'react-bootstrap';
 import PokemonComponent from './pokemon';
-import PokeNavBar from '@/components/pokeNavBarComp'
+import PokeNavBar from '@/components/pokeNavBarComp';
 
 
+// This type is used to get the pokemon id from the url path
 type Params = {
   params: Promise<{ pokemon_id: string }>
 }
 
 
+
+
+// Next.js passes the url parts which are defined between square brackets []
+// to the function which renders the page.
+
+
+// In our case http://localhost:3000/pokemon/2 is the URL.
+// Where the 2 is the [pokemon_id] and passed as a parameter.
 export default function PokemonPage({ params }: Params) {
   const {pokemon_id} = React.use(params);
-  const [pokemon, setPokemon] = useState<Pokemon>();
-  const [isPokemonLoaded, setPokemonLoaded] = useState(false);
+   //pokemon - A constant state variable which stores the pokemon information and retains the data between renders.
+   //setPokemon - A state setter function to update the variable and trigger React to render the component again.
+   const [pokemon, setPokemon] = useState<Pokemon>();
+   const [isPokemonLoaded, setPokemonLoaded] = useState(false);
 
 
-  useEffect(() => {
-      const fetchData = async () => {
-          const resp = await fetch('/pokemons.json');
-          const pokemons: Map<string, Pokemon> = new Map(Object.entries(await resp.json()));
-          const currentPokemon = pokemons.get(pokemon_id);
-          setPokemon(currentPokemon);
-          console.log(currentPokemon);
-          setPokemonLoaded(true);
-      };
+   useEffect(() => {
+       const fetchData = async () => {
+           const resp = await fetch('/api/pokemon/' + pokemon_id);
+           if (resp.ok) {
+               const pokemon: Pokemon = await resp.json();
+               console.log(pokemon);
+               setPokemon(pokemon);
+           }
+           setPokemonLoaded(true);
+       };
 
 
-      fetchData()
-          .catch(error => {
-              console.error(error);
-          });
-  }, []);
+       fetchData()
+           // Making sure to log errors on the console
+           .catch(error => {
+               console.error(error);
+               setPokemonLoaded(true);
+           });
+   }, []);
 
 
-  return (
+   return (
        <>
            <PokeNavBar></PokeNavBar>
            {
@@ -55,5 +71,5 @@ export default function PokemonPage({ params }: Params) {
                    </Container>
            }
        </>
-  );
+   );
 }
